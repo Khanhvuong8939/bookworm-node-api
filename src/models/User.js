@@ -16,7 +16,7 @@ schema.methods.isValidPassword = function isValidPassword(password) {
 };
 
 schema.methods.setPassword = function setPassword(password) {
-    this.password = bcrypt.hashSync(password, 10)
+    this.passwordHash = bcrypt.hashSync(password, 10)
 }
 
 schema.methods.generateToken = function generateToken() {
