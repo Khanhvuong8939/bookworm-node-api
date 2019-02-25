@@ -18,7 +18,8 @@
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
     "mongoose": "^5.4.14",
-    "mongoose-unique-validator": "^2.0.2"
+    "mongoose-unique-validator": "^2.0.2",
+    "nodemailer": "^5.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

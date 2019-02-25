@@ -8,7 +8,8 @@ import uniqueValidator from 'mongoose-unique-validator';
 const schema = new mongoose.Schema({
     email: { type: String, required: true, lowercase: true, unique: true },
     passwordHash: { type: String, required: true },
-    confirmed: false
+    confirmed: false,
+    confirmationToken: { type: String, default: '' }
 }, { timestamps: true });
 
 schema.methods.isValidPassword = function isValidPassword(password) {
@@ -17,6 +18,14 @@ schema.methods.isValidPassword = function isValidPassword(password) {
 
 schema.methods.setPassword = function setPassword(password) {
     this.passwordHash = bcrypt.hashSync(password, 10)
+}
+
+schema.methods.setConfirmationToken = function setConfirmationToken() {
+    this.confirmationToken = this.generateToken()
+}
+
+schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
+    return `${process.env.HOST}/confirmation/${this.confirmationToken}`
 }
 
 schema.methods.generateToken = function generateToken() {
