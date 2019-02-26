@@ -8,7 +8,7 @@ import uniqueValidator from 'mongoose-unique-validator';
 const schema = new mongoose.Schema({
     email: { type: String, required: true, lowercase: true, unique: true },
     passwordHash: { type: String, required: true },
-    confirmed: false,
+    confirmed: { type: Boolean, default: false },
     confirmationToken: { type: String, default: '' }
 }, { timestamps: true });
 
@@ -25,13 +25,14 @@ schema.methods.setConfirmationToken = function setConfirmationToken() {
 }
 
 schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
-    return `${process.env.HOST}/confirmation/${this.confirmationToken}`
+    return `${process.env.CLIENT_HOST}/confirmation/${this.confirmationToken}`
 }
 
 schema.methods.generateToken = function generateToken() {
     return jwt.sign(
         {
-            email: this.email
+            email: this.email,
+            confirmed: this.confirmed
         }, process.env.SECRETKEY
     );
 };

@@ -8,6 +8,7 @@ router.post('/', (req, res) => {
     User.findOne({ email: credentials.email })
         .then(user => {
             if (user && user.isValidPassword(credentials.password)) {
+                console.log(user.toAuthJson())
                 res.json({
                     user: user.toAuthJson()
                 });
@@ -16,6 +17,19 @@ router.post('/', (req, res) => {
             }
         });
 
+})
+
+router.post('/confirmation', (req, res) => {
+    const token = req.body.token;
+    console.log(token)
+    User.findOneAndUpdate(
+        { confirmationToken: token },
+        { confirmationToken: '', confirmed: true },
+        { new: true }
+    ).then(user => {
+        console.log(user)
+        user ? res.json({ user: user.toAuthJson() }) : res.status(400).json({ err: 'error' })
+    })
 })
 
 export default router;
