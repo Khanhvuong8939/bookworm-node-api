@@ -28,6 +28,21 @@ schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
     return `${process.env.CLIENT_HOST}/confirmation/${this.confirmationToken}`
 }
 
+schema.methods.generateResetPasswordLink = function generateResetPasswordLink() {
+    return `${process.env.CLIENT_HOST}/reset_password/${this.generateResetPasswordToken()}`
+}
+
+schema.methods.generateResetPasswordToken = function generateResetPasswordToken() {
+    return jwt.sign(
+        {
+            _id: this._id
+        }, process.env.SECRETKEY,
+        {
+            expiresIn: "1h"
+        }
+    )
+}
+
 schema.methods.generateToken = function generateToken() {
     return jwt.sign(
         {

@@ -24,12 +24,20 @@ export function sendConfirmationEmail(user) {
         ${user.generateConfirmationUrl()}
         `
     }
-    transport.sendMail(email, (err, info) => {
-        if (err) {
-            console.log('err', err);
-        }
-        res.json({
-            message: "Email successfully sent."
-        });
-    });
+    transport.sendMail(email);
 }
+
+export function sendResetPasswordEmail(user) {
+    const transport = setup();
+    const email = {
+        from,
+        to: user.email,
+        subject: 'Reset Password ',
+        text: `
+        Please follow this link to reset your password.
+        ${user.generateResetPasswordLink()}
+        `
+    }
+    transport.sendMail(email);
+}
+
